@@ -14,7 +14,7 @@ public class OcorrenciaFolha {
 		@GeneratedValue
 		private String descricao;
 	    private float valor;
-	    private Enum x;
+	    private Enum tipoOcorrencia;
 	    
 	    @OneToOne(fetch = FetchType.LAZY)
 	    @JoinColumn(name = "colaborador")
@@ -27,10 +27,10 @@ public class OcorrenciaFolha {
 			this.colaborador = colaborador;
 		}
 	    
-	    public OcorrenciaFolha(String descricao,float valor,Enum x){
+	    public OcorrenciaFolha(String descricao,float valor,Enum tipoOcorrencia){
 	        this.descricao=descricao;
 	        this.valor=valor;
-	        this.x=x;
+	        this.tipoOcorrencia=tipoOcorrencia;
 	    }
 	    public String getDescricao(){
 	        return this.descricao;
@@ -38,11 +38,11 @@ public class OcorrenciaFolha {
 	    public float getValor(){
 	        return this.valor;
 	    }
-	    public Enum getX(){
-	        return this.x;
+	    public Enum getTipoOcorrencia(){
+	        return this.tipoOcorrencia;
 	    }
-	    public void setX(Enum x){
-	        this.x=x;
+	    public void setTipoOcorrencia(Enum tipoOcorrencia){
+	        this.tipoOcorrencia=tipoOcorrencia;
 	    }
 	    public void setDescricao(String descricao){
 	        this.descricao=descricao;

@@ -3,12 +3,9 @@ package edu.ifce.folhapagamento.domain;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 
 @Entity
 public class Colaborador {
@@ -16,7 +13,9 @@ public class Colaborador {
 	@Id
 	@GeneratedValue
     private int codigo;
-    private String nome, edenreco, telefone, bairro, cep, cpf;
+	
+	
+    private String nome, endereco, telefone, bairro, cep, cpf;
     private float salarioAtual;
     
   //  @OneToMany(cascade = CascadeType.ALL, mappedBy = "colaborador")
@@ -31,10 +30,14 @@ public class Colaborador {
     }
 
 
-    public Colaborador(int codigo, String nome, String edenreco, String telefone, String bairro, String cep, String cpf, float salarioAtual) {
+    public Colaborador() {
+    	
+    }
+    
+    public Colaborador(int codigo, String nome, String endereco, String telefone, String bairro, String cep, String cpf, float salarioAtual) {
         this.codigo = codigo;
         this.nome = nome;
-        this.edenreco = edenreco;
+        this.endereco = endereco;
         this.telefone = telefone;
         this.bairro = bairro;
         this.cep = cep;
@@ -59,12 +62,12 @@ public class Colaborador {
         this.nome = nome;
     }
 
-    public String getEdenreco() {
-        return edenreco;
+    public String getEndereco() {
+        return endereco;
     }
 
-    public void setEdenreco(String edenreco) {
-        this.edenreco = edenreco;
+    public void setEndereco(String edenreco) {
+        this.endereco = edenreco;
     }
 
     public String getTelefone() {
@@ -100,7 +103,6 @@ public class Colaborador {
     }
 
     
-
     public float getSalarioAtual() {
         return this.salarioAtual;
     }
@@ -109,18 +111,18 @@ public class Colaborador {
         this.salarioAtual = salarioAtual;
     }
 
-    public static float calcularSalario(Colaborador x){
-        return x.getSalarioAtual() + x.totalProventos() - x.totalDescontos();
+    public static float calcularSalario(Colaborador colaborador){
+        return colaborador.getSalarioAtual() + colaborador.totalProventos() - colaborador.totalDescontos();
     }
 
-    public void inserirOcorrencias(OcorrenciaFolha o) {
-        ocorrencias.add(o);
+    public void inserirOcorrencias(OcorrenciaFolha ocorrencia) {
+        ocorrencias.add(ocorrencia);
     }
 
     public float totalProventos(){
         float somaProventos = 0;
         for (int i = 0; i < ocorrencias.size(); i++){
-            if(ocorrencias.get(i).getX() == EnumTipoOcorrencia.PROVENTO) {
+            if(ocorrencias.get(i).getTipoOcorrencia() == EnumTipoOcorrencia.PROVENTO) {
                 somaProventos += ocorrencias.get(i).getValor();
             }
         }
@@ -129,14 +131,11 @@ public class Colaborador {
     public float totalDescontos(){
         float somaDescontos = 0;
         for (int i = 0; i < ocorrencias.size(); i++){
-            if(ocorrencias.get(i).getX() == EnumTipoOcorrencia.DESCONTO) {
+            if(ocorrencias.get(i).getTipoOcorrencia() == EnumTipoOcorrencia.DESCONTO) {
                 somaDescontos += ocorrencias.get(i).getValor();
             }
         }
         return somaDescontos;
     }
-
-
-
 
 }

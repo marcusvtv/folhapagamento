@@ -3,10 +3,28 @@ package edu.ifce.folhapagamento.domain;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Generated;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+
+@Entity
 public class FolhaPagamento {
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private int id;
 	private int mes, ano;
     private float totalDescontos, totalProventos;
-    private List<Colaborador> Colaboradores = new ArrayList<>();
+    
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = false)
+    @JoinColumn(name="colaborador_id")
+    private List<Colaborador> colaboradores = new ArrayList<>();
 
     public FolhaPagamento(int mes, int ano) {
         this.mes = mes;
@@ -45,22 +63,23 @@ public class FolhaPagamento {
         this.totalProventos = totalProventos;
     }
 
+    
     public List<Colaborador> getColaboradores() {
-        return Colaboradores;
+        return colaboradores;
     }
 
     public void setColaboradores(List<Colaborador> colaboradores) {
-        this.Colaboradores = colaboradores;
+        this.colaboradores = colaboradores;
     }
 
     public float somaOcorrencias() {
         float total = 0, somaProventos = 0f, somaDescontos = 0f;
-        for (int i = 0; i < Colaboradores.size(); i++) {
-            for (int j = 0; j < Colaboradores.get(i).getOcorrencias().size(); j++) {
-                if (Colaboradores.get(i).getOcorrencias().get(j).getX() == EnumTipoOcorrencia.PROVENTO) {
-                    this.totalProventos += Colaboradores.get(i).getOcorrencias().get(j).getValor();
-                } else if (Colaboradores.get(i).getOcorrencias().get(j).getX() == EnumTipoOcorrencia.DESCONTO) {
-                    this.totalDescontos += Colaboradores.get(i).getOcorrencias().get(j).getValor();
+        for (int i = 0; i < colaboradores.size(); i++) {
+            for (int j = 0; j < colaboradores.get(i).getOcorrencias().size(); j++) {
+                if (colaboradores.get(i).getOcorrencias().get(j).getTipoOcorrencia() == EnumTipoOcorrencia.PROVENTO) {
+                    this.totalProventos += colaboradores.get(i).getOcorrencias().get(j).getValor();
+                } else if (colaboradores.get(i).getOcorrencias().get(j).getTipoOcorrencia() == EnumTipoOcorrencia.DESCONTO) {
+                    this.totalDescontos += colaboradores.get(i).getOcorrencias().get(j).getValor();
                 }
                 total = (this.totalProventos - this.totalDescontos);
             }
@@ -70,14 +89,14 @@ public class FolhaPagamento {
 
     public float calcularFolha() {
         float totalsoma = 0;
-        for (int i = 0; i < Colaboradores.size(); i++) {
-            totalsoma += Colaboradores.get(i).getSalarioAtual() + this.somaOcorrencias();
+        for (int i = 0; i < colaboradores.size(); i++) {
+            totalsoma += colaboradores.get(i).getSalarioAtual() + this.somaOcorrencias();
         }
         return totalsoma;
     }
 
     public void inserirColaboradores (Colaborador c){
-        Colaboradores.add(c);
+        colaboradores.add(c);
     }
 
 }
