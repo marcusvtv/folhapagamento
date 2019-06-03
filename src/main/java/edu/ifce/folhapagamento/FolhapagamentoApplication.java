@@ -8,6 +8,7 @@ public class FolhapagamentoApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(FolhapagamentoApplication.class, args);
+		
 	}
 
 }
