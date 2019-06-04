@@ -3,19 +3,42 @@ package edu.ifce.folhapagamento.domain;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
-@Entity
+import org.hibernate.validator.constraints.Range;
+
+@Entity	
 public class Colaborador {
 
 	@Id
 	@GeneratedValue
     private int codigo;
+
+	@NotNull(message = "Nome é obrigatório")
+	@Size(min=4, max=30, message="O nome deve ter entre 4 e 30 caracteres")
+	private String nome;
 	
-	
-    private String nome, endereco, telefone, bairro, cep, cpf;
+    private String endereco;
+    private String telefone;
+    private String bairro;
+    
+    @Basic
+    @Size(min=8,max=8, message = "O CEP deverá ter 8 caracteres")
+    private String cep;
+    
+    @NotNull(message = "O CPF deverá ser preenchido")
+    @Size(min =11,max = 11, message = "O CPF deverá conter 8 caracteres")
+    private String cpf;
+    
+    @NotNull(message="O Salário deverá ser preenchido")
+    @Range(min=1, message = "Valor não pode ser inferior a 1,00")
     private float salarioAtual;
     
   //  @OneToMany(cascade = CascadeType.ALL, mappedBy = "colaborador")
@@ -45,22 +68,16 @@ public class Colaborador {
         this.salarioAtual = salarioAtual;
     }
 
+   //getters and setters  
 
-    public int getCodigo() {
+	public int getCodigo() {
         return codigo;
     }
 
     public void setCodigo(int codigo) {
         this.codigo = codigo;
     }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
+    
 
     public String getEndereco() {
         return endereco;

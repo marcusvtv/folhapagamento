@@ -3,27 +3,39 @@ package edu.ifce.folhapagamento.domain;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.Generated;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Range;
+
 
 @Entity
 public class FolhaPagamento {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int id;
-	private int mes, ano;
+	private int id_folhaPagamento;
+	
+	@Range(min=1, max=12, message="Mês deverá ser entre 1 e 12")
+	private int mes;
+	
+	@Range(min =1900, message="Ano não pode ser inferior a 1900")
+	private int ano;
+	
+	@Min(0)
     private float totalDescontos, totalProventos;
     
+	
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = false)
-    @JoinColumn(name="colaborador_id")
+    @JoinColumn(name="folhapagamento_id")
     private List<Colaborador> colaboradores = new ArrayList<>();
 
     public FolhaPagamento(int mes, int ano) {
