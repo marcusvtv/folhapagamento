@@ -3,7 +3,7 @@ package edu.ifce.folhapagamento.domain;
 import java.util.ArrayList;
 import java.util.List;
 
-
+import edu.ifce.folhapagamento.domain.*;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -34,7 +34,7 @@ public class FolhaPagamento {
     private float totalDescontos, totalProventos;
     
 	
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = false)
+    @OneToMany( cascade = CascadeType.ALL, orphanRemoval = false)
     @JoinColumn(name="folhapagamento_id")
     private List<Colaborador> colaboradores = new ArrayList<>();
 
@@ -107,8 +107,8 @@ public class FolhaPagamento {
         return totalsoma;
     }
 
-    public void inserirColaboradores (Colaborador c){
-        colaboradores.add(c);
+    public void inserirColaboradores (Colaborador colaborador){
+        colaboradores.add(colaborador);
     }
 
 }

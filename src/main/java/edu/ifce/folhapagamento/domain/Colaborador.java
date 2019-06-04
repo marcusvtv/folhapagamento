@@ -2,17 +2,23 @@ package edu.ifce.folhapagamento.domain;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import edu.ifce.folhapagamento.domain.*;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.criteria.Fetch;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Range;
+
 
 @Entity	
 public class Colaborador {
@@ -41,9 +47,15 @@ public class Colaborador {
     @Range(min=1, message = "Valor não pode ser inferior a 1,00")
     private float salarioAtual;
     
-  //  @OneToMany(cascade = CascadeType.ALL, mappedBy = "colaborador")
-    private ArrayList<OcorrenciaFolha> ocorrencias = new ArrayList<OcorrenciaFolha>();
     
+    @OneToMany(
+    		mappedBy = "colaborador", 
+    		targetEntity = OcorrenciaFolha.class, 
+    		cascade = CascadeType.ALL,
+    		fetch = FetchType.LAZY
+    )
+    private List<OcorrenciaFolha> ocorrencias = new ArrayList<OcorrenciaFolha>();
+     
     public List<OcorrenciaFolha> getOcorrencias() {
         return ocorrencias;
     }

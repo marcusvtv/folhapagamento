@@ -1,5 +1,6 @@
 package edu.ifce.folhapagamento.domain;
 
+import edu.ifce.folhapagamento.domain.Colaborador;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -7,6 +8,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -32,11 +34,10 @@ public class OcorrenciaFolha {
 		private Enum tipoOcorrencia;
 	    
 		@NotNull(message="Deve preencher o colaborador")
-	    @OneToOne(fetch = FetchType.LAZY)
-	    @JoinColumn(name = "colaborador")
-	    private Colaborador colaborador;
-	    
-	    
+		@ManyToOne  
+		@JoinColumn(name="colaborador_id")
+		private Colaborador colaborador;
+	    		
 	    public Colaborador getColaborador() {
 			return colaborador;
 		}
