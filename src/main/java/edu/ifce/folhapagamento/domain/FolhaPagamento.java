@@ -38,6 +38,9 @@ public class FolhaPagamento {
     @JoinColumn(name="folhapagamento_id")
     private List<Colaborador> colaboradores = new ArrayList<>();
 
+    public FolhaPagamento() {
+    	
+    }
     public FolhaPagamento(int mes, int ano) {
         this.mes = mes;
         this.ano = ano;

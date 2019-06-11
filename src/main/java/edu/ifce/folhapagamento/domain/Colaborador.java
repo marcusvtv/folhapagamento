@@ -9,6 +9,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
@@ -24,7 +25,7 @@ import org.hibernate.validator.constraints.Range;
 public class Colaborador {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy=GenerationType.AUTO)
     private int codigo;
 
 	@NotNull(message = "Nome é obrigatório")
@@ -82,6 +83,14 @@ public class Colaborador {
 
    //getters and setters  
 
+    public String getNome() {
+		return nome;
+	}
+    
+    public void setNome(String nome) {
+		this.nome = nome;
+	}
+    
 	public int getCodigo() {
         return codigo;
     }
