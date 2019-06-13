@@ -20,13 +20,16 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Range;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 
 @Entity	
 public class Colaborador {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-    private int codigo;
+    private int id;
 
 	@NotNull(message = "Nome é obrigatório")
 	@Size(min=4, max=30, message="O nome deve ter entre 4 e 30 caracteres")
@@ -55,13 +58,15 @@ public class Colaborador {
     		cascade = CascadeType.ALL,
     		fetch = FetchType.LAZY
     )
+    
+    @JsonManagedReference
     private List<OcorrenciaFolha> ocorrencias = new ArrayList<OcorrenciaFolha>();
      
     public List<OcorrenciaFolha> getOcorrencias() {
         return ocorrencias;
     }
 
-    public void setOcorrencias(ArrayList<OcorrenciaFolha> ocorrencias) {
+    public void setOcorrencias(List<OcorrenciaFolha> ocorrencias) {
         this.ocorrencias = ocorrencias;
     }
 
@@ -71,7 +76,7 @@ public class Colaborador {
     }
     
     public Colaborador(int codigo, String nome, String endereco, String telefone, String bairro, String cep, String cpf, float salarioAtual) {
-        this.codigo = codigo;
+        this.id = codigo;
         this.nome = nome;
         this.endereco = endereco;
         this.telefone = telefone;
@@ -91,12 +96,12 @@ public class Colaborador {
 		this.nome = nome;
 	}
     
-	public int getCodigo() {
-        return codigo;
+	public int getId() {
+        return id;
     }
 
-    public void setCodigo(int codigo) {
-        this.codigo = codigo;
+    public void setId(int codigo) {
+        this.id = codigo;
     }
     
 

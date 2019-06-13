@@ -14,8 +14,8 @@ import edu.ifce.folhapagamento.repositories.ColaboradorRepository;
 import edu.ifce.folhapagamento.repositories.FolhaPagamentoRepository;
 
 @Controller
-@RequestMapping(path="/folhapagamento")
-public class FolhaPagamentoController {
+@RequestMapping(path="/aplicativo")
+public class FolhaPagamentoController extends MainController {
 	@Autowired
 	private FolhaPagamentoRepository folhaPagamentoRepository;
 	@GetMapping(path="/folhapagamento/add")
@@ -37,17 +37,22 @@ public class FolhaPagamentoController {
 		return folhaPagamentoRepository.findAll();
 	}
 	
-	@RequestMapping(path="/folhapagamento/delete/{id}")
-    public String removeFolhaPagamento(@PathVariable("id") Integer id){
-		
-		folhaPagamentoRepository.deleteById(id);
-        return "redirect:/folhapagamento/folhapagamento/list/all";
-        //return "Dados Excluidos Com Sucesso!";
+	@RequestMapping(path="/folhapagamento/delete")
+    public @ResponseBody String removeFolhaPagamento(@RequestParam Integer id){
+		try {
+			folhaPagamentoRepository.deleteById(id);	
+		}
+		catch (Exception e) {
+			// TODO: handle exception
+			return "Não foi possível excluir a folha de Id: "+id+"\nMotivo: " + e.toString();
+		}
+       // return "redirect:/aplicativo/folhapagamento/list/all";
+        return "Folha Excluída Com Sucesso!";
 	
 	}
 	
-	@RequestMapping(path="/folhapagamento/list/{id}")
-    public @ResponseBody FolhaPagamento viewFolhaPagamento(@PathVariable("id") Integer id){
+	@RequestMapping(path="/folhapagamento/list")
+    public @ResponseBody FolhaPagamento viewFolhaPagamento(@RequestParam Integer id){
 		
 		FolhaPagamento folha = new FolhaPagamento();
 		try {
@@ -57,5 +62,26 @@ public class FolhaPagamentoController {
 		}
 		return folha;
 	}//término de viewFolhaPagamento
+	
+	@GetMapping(path="/folhapagamento/edit/incluicolaborador")
+	 
+	public  @ResponseBody String incluiColaboradorEmFolhaPagamento (
+			@RequestParam Integer idFolha,
+			@RequestParam Integer colaboradorId
+			) {
+			
+	  	FolhaPagamento folhaPagamento = new FolhaPagamento();
+	  	Colaborador colaborador = new Colaborador();
+	  	colaborador = super.getColaboradorById(colaboradorId);
+	  	try {
+			folhaPagamento = folhaPagamentoRepository.findById(idFolha).get();
+			folhaPagamento.getColaboradores().add(colaborador);
+			folhaPagamentoRepository.save(folhaPagamento);
+		}catch (Exception e) {
+			return "Erro ao tentar incluir colaborador em folha.\nMotivo: "
+					+ e.toString();
+		}
+		return "Dados Salvos Com Sucesso!";
+	}
 	
 }//término da classe

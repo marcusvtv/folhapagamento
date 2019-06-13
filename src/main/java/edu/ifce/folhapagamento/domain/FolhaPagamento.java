@@ -11,18 +11,21 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Range;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 
 @Entity
 public class FolhaPagamento {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int id_folhaPagamento;
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private int id;
 	
 	@Range(min=1, max=12, message="Mês deverá ser entre 1 e 12")
 	private int mes;
@@ -34,10 +37,19 @@ public class FolhaPagamento {
     private float totalDescontos, totalProventos;
     
 	
-    @OneToMany( cascade = CascadeType.ALL, orphanRemoval = false)
+    @OneToMany( cascade = CascadeType.DETACH, orphanRemoval = false)
     @JoinColumn(name="folhapagamento_id")
+    @JsonManagedReference
     private List<Colaborador> colaboradores = new ArrayList<>();
 
+    public int getId() {
+		return id;
+	}
+    
+    public void setId(int id) {
+		this.id = id;
+	}
+    
     public FolhaPagamento() {
     	
     }

@@ -6,4 +6,5 @@ import edu.ifce.folhapagamento.domain.OcorrenciaFolha;
 
 public interface OcorrenciaFolhaRepository extends CrudRepository<OcorrenciaFolha, Integer> {
 
+	
 }
